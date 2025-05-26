@@ -1,0 +1,19 @@
+function Cl_da = getClda(modelo)
+%(y0, yf, b, lam, AR, LAMc4, t_c, ca_c, Cla, Minf)
+    Minf    = modelo.general.Minf;
+    yf          
+
+    beta = sqrt(1-Minf^2);
+
+    betaCldelta_kf  = betaCldelta_k_calc(yf,b,lam,AR,LAMc4,Minf);
+    betaCldelta_k0  = betaCldelta_k_calc(y0,b,lam,AR,LAMc4,Minf);
+    Cldelta_prima   = 1/beta*(betaCldelta_kf - betaCldelta_k0);
+
+    Cldelta_int    = Cldelta_Cldeltatheory_calc(ca_c,Cla)*Cldeltatheory_calc(ca_c,t_c);
+
+    alpha_delta = Cldelta_int/Cla;
+
+    Cl_da = Cldelta_prima*alpha_delta;
+end
+
+

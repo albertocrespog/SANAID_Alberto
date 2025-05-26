@@ -1,0 +1,129 @@
+close all
+celar all
+format long
+
+aerodinamica= [12.908375373029999   0.018927299537155   0.050822060331961                   0   1.500843875297937]
+propul =1.0e+02 *[0.020000000000000   0.020000000000000   3.000000000000000   0.004000000000000   0.010000000000000 0.008200000000000   0.010000000000000]
+crucero = 1.0e+05 *[ 2.500000000000000   0.000002818205121  -0.000010000000000  -0.000010000000000  -0.000010000000000 -0.000010000000000  -0.000010000000000  -0.000010000000000  -0.000010000000000  -0.000010000000000]
+
+
+propul = 1.0e+05 *[ 0.000020000000000   0.000020000000000   2.237099616000000   0.000000000000676   0.000010000000000   0.000008200000000   0.000010000000000]
+aerodinamica = 12.908400000000000   0.018900000000000   0.050800000000000                   0   1.500800000000000]
+crucero =1.0e+05 *[  2.500000000000000   0.000002818000000  -0.000010000000000  -0.000010000000000  -0.000010000000000  -0.000010000000000  -0.000010000000000  -0.000010000000000  -0.000010000000000  -0.000010000000000]
+W_inicial = 2.223461754500000e+04
+h_inicial = 3000
+opcion = 1
+i = 1
+datos = inicializar: 0
+    
+% AERODINAMICA
+S = aerodinamica(1);
+Cd0 = aerodinamica(2);
+k1 = aerodinamica(3);
+k2 = aerodinamica(4);
+CLmax_limpio = aerodinamica(5);
+
+% PROPULSION
+tipo_motor = propul(1);
+num_motores = propul(2);
+T_SL = propul(3);
+c_SL = propul(4);
+civil_mil = propul(5);
+eta_inst = propul(6);
+derivacion = propul(7);
+
+% CRUCERO
+dist_final = crucero(1);
+Mach = crucero(2);
+C_l = crucero(3);
+delta_T_gases = crucero(4);
+velocidad_ini = crucero(5);
+velocidad_fin = crucero(6);
+fuel_a_quemar = crucero(7);
+Cd0_polar = crucero(8);
+k1_polar = crucero(9);
+k2_polar = crucero(10);
+
+% ATMOSFERA ESTANDAR
+[Temp_SL,rho_SL,p_SL,a_SL] = atmos_inter_mio(0);
+[Temp,rho,p,a] = atmos_inter_mio(h_inicial);
+
+% ------------------------  CONSTANTES --------------------------
+g = 9.80665;
+
+W_ini = W_inicial;
+h_ini = h_inicial;
+x_ini = 0;
+
+iif = @(varargin) varargin{2 * find([varargin{1:2:end}], 1, 'first')}();   %ESTA LINEA PERMITE USAR CONDICIONES EN LAS FUNCIONES!!!
+
+eta_p = eta_inst;
+
+T_SL = T_SL * num_motores;
+
+%-------------------------------------------------------------------------%
+%ECUACIONES DE LA MECANICA DEL VUELO PARA EL CRUCERO
+
+% T(delta_T,V) = D(V,CL) + W/g * dV/dt
+% L(V,CL)      = W
+% dW/dt        = -C(delta_T,V)*g*T(delta_T,V)
+
+%-------------------------------------------------------------------------%
+
+
+switch opcion
+    
+    case 1  %CRUCERO A MACH CONSTANTE Y DISTANCIA DADA
+        
+        % C_A = 0.5*rho*V^2*S*Cd0;
+        % C_B = k2;
+        % C_C = k1/(0.5*rho*V^2*S);
+        % C_D = sqrt(4*C_A*C_C - C_B^2);
+        % C_E = C*g/V;
+        % C_F = 2*atan((2*C_C*W_ini-C_B)/C_D)/C_D;
+        %
+        % % Ecuacion dW/dt = -C*T integrada (BREGUET añadiendole el termino k2)
+        %
+        % W = @(x) (C_D.*tan(C_D.*(C_F-C_E.*x)./2) + C_B)./(2*C_C);
+        
+        x_final = dist_final
+        M = Mach
+        V = M * a
+        
+        CL = @(W) W./(0.5*rho*V^2*S);
+        CD = @(W) Cd0 - k2.*CL(W) + k1.*CL(W).^2;
+        D  = @(W) 0.5*rho*V^2*S.*CD(W);
+        T  = @(W) D(W);
+        
+        a_1=3.559957437510763; a_2=-10.739698199171459; a_3= 11.989635150373475; a_4=-5.869876557884609; a_5=2.059994459180667;
+        
+        switch tipo_motor
+            case 1
+                delta_T = @(W) T(W)./(T_SL*(1+0.2*M^2)^(1.4./0.4)*(1-0.49.*sqrt(M))*(rho/rho_SL));
+                correccion = @(W)(a_1.*delta_T(W).^4+a_2.*delta_T(W).^3+a_3.*delta_T(W).^2+a_4.*delta_T(W)+a_5);
+                switch derivacion
+                    case 1
+                        C =  @(W) c_SL.*correccion(W).*(1+1.2*M).*sqrt(Temp/Temp_SL);
+                    case 2
+                        C =  @(W) c_SL.*correccion(W).*(1+0.33*M).*sqrt(Temp/Temp_SL);
+                    case 3
+                        C =  @(W) c_SL.*correccion(W).*(1+0.16875*M).*sqrt(Temp/Temp_SL);
+                end
+            case 2
+                delta_T = @(W) T(W)./(T_SL*eta_p/V*(1+0.2.*M^2)^(1.4./0.4)*(rho*Temp/(rho_SL*Temp_SL)));
+                correccion = @(W)(a_1.*delta_T(W).^4+a_2.*delta_T(W).^3+a_3.*delta_T(W).^2+a_4.*delta_T(W)+a_5);
+                C = @(W) c_SL.*correccion(W).*(1+1.44*M).*sqrt(Temp/Temp_SL).* V./eta_p;
+            case 3
+                delta_T = @(W) T(W)./(T_SL*eta_p/V*((8.55*rho/rho_SL - 1)/7.55));
+                correccion = @(W)(a_1.*delta_T(W).^4+a_2.*delta_T(W).^3+a_3.*delta_T(W).^2+a_4.*delta_T(W)+a_5);
+                C = @(W) c_SL.*correccion(W).*V./eta_p;
+        end
+        
+        % Integramos  dW/dt = -C(W)gT(W)
+        
+        num = 10000;
+        X_v = linspace(0,x_final,num);
+        W_ini
+        pause
+        dwdx = @(x,W) -C(W).*g.*T(W)/V;
+        [X,PESO] = ode45(dwdx,X_v,W_ini);

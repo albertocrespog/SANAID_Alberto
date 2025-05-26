@@ -1,0 +1,479 @@
+function [M_alpha_cero,V_alpha_cero] = GENERATE_PLOTS(OUTPUT_read_XLSX,Plot_Options,Fig,Storing_GEO_DATA_1,Storing_WEIGHT_DATA_1,Storing_AERO_DATA_1,...
+    Storing_STABILITY_DATA_1,Storing_STABILITY_DATA_2,Storing_STABILITY_DATA_2B,Storing_STABILITY_DATA_3,Storing_STABILITY_DATA_4A,Storing_STABILITY_DATA_4B,...
+    Storing_STABILITY_DATA_4C,Storing_STABILITY_DATA_4D,Storing_STABILITY_DATA_5,Storing_PERFORMANCE_DATA_1,Storing_PERFORMANCE_DATA_2,Storing_PROPULSION_DATA,conv_UNITS,AC_CONFIGURATION,case_AC)
+
+
+        [M_alpha_cero{n},V_alpha_cero{n}] = GENERATE_PLOTS(OUTPUT_read_XLSX_VEC{n},Plot_Options,Fig,Storing_GEO_DATA_1{n},Storing_WEIGHT_DATA_1{n},Storing_AERO_DATA_1{n},...
+            Storing_STABILITY_DATA_1{n},Storing_STABILITY_DATA_2{n},Storing_STABILITY_DATA_2B{n},Storing_STABILITY_DATA_3{n},Storing_STABILITY_DATA_4A{n},...
+            Storing_STABILITY_DATA_4B{n},Storing_STABILITY_DATA_4C{n},Storing_STABILITY_DATA_4D{n},Storing_STABILITY_DATA_5{n},...
+            Storing_PERFORMANCE_DATA_1{n}, Storing_PERFORMANCE_DATA_2{n},Storing_PROPULSION_DATA{n},conv_UNITS,AC_CONFIGURATION,case_AC);
+
+
+        
+Geo_tier = Storing_GEO_DATA_1.Geo_tier;
+Body_Geo = Storing_GEO_DATA_1.Body_Geo;
+meshData = Storing_GEO_DATA_1.meshData;
+Performance = Storing_AERO_DATA_1.Performance;
+Weight_tier = Storing_WEIGHT_DATA_1.Weight_tier;
+
+Prop_data = Storing_PROPULSION_DATA.Prop_data;
+
+if OUTPUT_read_XLSX.STUDY_flags.AERODYNAMIC_STUDY == 1
+    VECTOR_XFLR5 = Storing_AERO_DATA_1.VECTOR_XFLR5;
+    Design_criteria = Storing_AERO_DATA_1.Design_criteria;
+    DATA_Ae = Storing_AERO_DATA_1.DATA_Ae;
+    casos = Storing_AERO_DATA_1.casos;
+    prefix = Storing_AERO_DATA_1.prefix;
+    mark_legend = Storing_AERO_DATA_1.mark_legend;
+    X_OC = Storing_AERO_DATA_1.X_OC;
+    Aero_TH = Storing_AERO_DATA_1.Aero_TH;
+    Aero = Storing_AERO_DATA_1.Aero;
+    DATA_PL = Storing_AERO_DATA_1.DATA_PL;
+    Performance = Storing_AERO_DATA_1.Performance;
+end
+
+if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+    if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim == 1
+        TRIM_RESULTS = Storing_STABILITY_DATA_1.TRIM_RESULTS;
+        Trim_ITER = Storing_STABILITY_DATA_1.Trim_ITER;
+        Stab_Der = Storing_STABILITY_DATA_1.Stab_Der;
+        Stab_Der_parts = Storing_STABILITY_DATA_1.Stab_Der_parts;
+        Stab_Dyn_Long = Storing_STABILITY_DATA_1.Stab_Dyn_Long;
+        Stab_Dyn_LatDir = Storing_STABILITY_DATA_1.Stab_Dyn_LatDir;
+    end
+    if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_varV_m0 == 1
+        TRIM_RESULTS_var_V_XCG = Storing_STABILITY_DATA_2.TRIM_RESULTS_var_V_XCG;
+        Trim_ITER_var_V_XCG = Storing_STABILITY_DATA_2.Trim_ITER_var_V_XCG;
+        Restrictions_var_V_XCG = Storing_STABILITY_DATA_2.Restrictions_var_V_XCG;
+        Stab_Der_var_V_XCG = Storing_STABILITY_DATA_2.Stab_Der_var_V_XCG;
+        Stab_Der_parts_V_XCG = Storing_STABILITY_DATA_2.Stab_Der_parts_V_XCG;
+        Stab_Dyn_Long_var_V_XCG = Storing_STABILITY_DATA_2.Stab_Dyn_Long_var_V_XCG;
+        Stab_Dyn_LatDir_var_V_XCG = Storing_STABILITY_DATA_2.Stab_Dyn_LatDir_var_V_XCG;
+        x_XCG_VAR = Storing_STABILITY_DATA_2.x_XCG_VAR;
+        % VN diagram
+        TRIM_RESULTS_var_V_XCG2 = Storing_STABILITY_DATA_2B.TRIM_RESULTS_var_V_XCG;
+        Trim_ITER_var_V_XCG2 = Storing_STABILITY_DATA_2B.Trim_ITER_var_V_XCG;
+        Restrictions_var_V_XCG2 = Storing_STABILITY_DATA_2B.Restrictions_var_V_XCG;
+        Stab_Der_var_V_XCG2 = Storing_STABILITY_DATA_2B.Stab_Der_var_V_XCG;
+        Stab_Der_parts_V_XCG2 = Storing_STABILITY_DATA_2B.Stab_Der_parts_V_XCG;
+        Stab_Dyn_Long_var_V_XCG2 = Storing_STABILITY_DATA_2B.Stab_Dyn_Long_var_V_XCG;
+        Stab_Dyn_LatDir_var_V_XCG2 = Storing_STABILITY_DATA_2B.Stab_Dyn_LatDir_var_V_XCG;
+        Plot_options2 = Storing_STABILITY_DATA_2B.Plot_Options;
+        Aero2 = Storing_AERO_DATA_1.Aero;        
+        
+    end
+    if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_var_XCG
+        TRIM_RESULTS_var_XCG = Storing_STABILITY_DATA_3.TRIM_RESULTS_var_XCG;
+        Trim_ITER_var_XCG = Storing_STABILITY_DATA_3.Trim_ITER_var_XCG;
+        Stab_Der_var_XCG = Storing_STABILITY_DATA_3.Stab_Der_var_XCG;
+        Stab_Der_parts_var_XCG = Storing_STABILITY_DATA_3.Stab_Der_parts_var_XCG;
+        Stab_Dyn_Long_var_XCG = Storing_STABILITY_DATA_3.Stab_Dyn_Long_var_XCG;
+        Stab_Dyn_LatDir_var_XCG = Storing_STABILITY_DATA_3.Stab_Dyn_LatDir_var_XCG;
+    end
+
+    if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_lat == 1
+        Trim_ITER_LAT = Storing_STABILITY_DATA_4A.Trim_ITER_LAT;
+        conditions_TRIM_lat = Storing_STABILITY_DATA_4A.conditions_TRIM_lat;
+    end
+    
+    if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_lat_asymmetries == 1
+        Trim_ITER_LAT2 = Storing_STABILITY_DATA_4B.Trim_ITER_LAT2;
+        conditions_TRIM_lat2 = Storing_STABILITY_DATA_4B.conditions_TRIM_lat;
+    end
+
+    if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_lat_accelerations == 1
+        Trim_ITER_LAT3 = Storing_STABILITY_DATA_4C.Trim_ITER_LAT3;
+        conditions_TRIM_lat3 = Storing_STABILITY_DATA_4C.conditions_TRIM_lat;
+    end
+
+    if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_lat_Trim_TAB == 1
+        Trim_ITER_LAT4 = Storing_STABILITY_DATA_4D.Trim_ITER_LAT4;
+        Trim_ITER_LAT4B = Storing_STABILITY_DATA_4D.Trim_ITER_LAT4B;
+        Trim_ITER_LAT4C = Storing_STABILITY_DATA_4D.Trim_ITER_LAT4C;
+        Trim_ITER_LAT4D = Storing_STABILITY_DATA_4D.Trim_ITER_LAT4D;
+        conditions_TRIM_lat4 = Storing_STABILITY_DATA_4D.conditions_TRIM_lat;
+    end
+    
+    if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Turning == 1
+        Trim_ITER_LAT_Viraje = Storing_STABILITY_DATA_5.Trim_ITER_LAT_Viraje;
+        conditions_TRIM_turning = Storing_STABILITY_DATA_5.conditions_TRIM_turning;
+    end
+
+    if  OUTPUT_read_XLSX.STUDY_flags.ANALYSIS_PERFORMANCE_AP_var == 1
+        Storing_PERFORMANCE_2 = Storing_PERFORMANCE_DATA_2.Storing_PERFORMANCE_2;
+        Plot_Options4 = Storing_PERFORMANCE_DATA_2.Plot_Options;
+        Restrictions_var_V_m = Storing_PERFORMANCE_DATA_2.Restrictions_var_V_m;
+    end
+
+end
+
+if OUTPUT_read_XLSX.STUDY_flags.PERFORMANCE_STUDY == 1
+    % Segments = Storing_PERFORMANCE_DATA_1{1};
+    % handles = Storing_PERFORMANCE_DATA_1{2};
+    % seg = Storing_PERFORMANCE_DATA_1{3};
+    % Weights_AP = Storing_PERFORMANCE_DATA_1{4};
+    % Total_Datos = Storing_PERFORMANCE_DATA_1{5};
+    % datos = Storing_PERFORMANCE_DATA_1{6};
+    Segments = Storing_PERFORMANCE_DATA_1.Segments;
+    handles = Storing_PERFORMANCE_DATA_1.handles;
+    seg = Storing_PERFORMANCE_DATA_1.seg;
+    Weights_AP = Storing_PERFORMANCE_DATA_1.Weights_AP;
+    Total_Datos = Storing_PERFORMANCE_DATA_1.Total_Datos;
+    datos = Storing_PERFORMANCE_DATA_1.datos;
+% Performance Analysis integrated with AP Codes varying Conditions
+    if OUTPUT_read_XLSX.STUDY_flags.ANALYSIS_PERFORMANCE_AP_var == 1
+        % Temporary
+    end
+end
+
+%% Plots graphics
+%% Defines the plots that will be plotted, and in which order
+% Flags for plotting the figures, defiens the order and the number of plots
+% Case 1 PRINT_PLOTS_XFLR5 = 0; % Prints plots - Aero
+% Case 2 PRINT_PLOTS_XFLR5_POLAR = 0; % Prints plots - Aero
+% Case 3 PRINT_PLOTS_XAC = 0; % print Plots for Stimation ofXAC
+% Case 4 PRINT_PLOTS_CT_Model = 0; % print Plots for Propulsive Models
+% Case 5 PRINT_PLOTS_3D = 0; % Prints plots for 3D
+% Case 6 PRINT_PLOTS_STABILITY_SM = 0; % prints plots of SM analysis
+% Case 7 PRINT_PLOTS_TRIM_LON = 0; % prints plots of longitudinal Trim
+% Case 8 PRINT_PLOTS_TRIM_LON_VAR = 0; % prints plots of longitudinal Trim with Variable mass & Variable Speed
+% Case 9 PRINT_PLOTS_TRIM_LAT = 0; % prints plots of lateral Trim
+
+% Case 10 PRINT_PLOTS_TRIM_LAT_ASYMMETRIES = 0; % Prints plots of lateral Trim - asymmetries 
+% Case 11 PRINT_PLOTS_TRIM_LAT_ACCELLERATIONS = 0; % Prints plots of lateral Trim - accelerations
+
+% Case 12 PRINT_PLOTS_TURNING_LAT = 0; % prints plots of lateral Turning
+% Case 13 PLOTS STABILITY DERIVATIVES FOR VAR MASS AND VELOCITY
+% Case 14 PLOTS STABILITY ANALYSIS FOR VAR MASS AND VELOCITY
+% Case 15 PLOTS DYNAMIC STABILITY ANALYSIS - LONGITUDINAL
+% Case 16 PLOTS DYNAMIC STABILITY ANALYSIS - LATERAL
+% Case 17 PERFORMANCE_STUDY
+
+plot = OUTPUT_read_XLSX.PLOT_flags.plot;
+
+PLOTS = []; % dummy
+for i=1:length(plot)
+    if plot(i) == 1
+        PLOTS(i) = i;
+    end
+end
+
+dummy = 0;
+M_alpha_cero = 0;
+V_alpha_cero = 0;
+
+[mark_Type COLOR_scheme, Plot_Options] = Generate_Plot_Options(prefix,mark_legend,VECTOR_XFLR5,Plot_Options,OUTPUT_read_XLSX);
+
+for i=1:length(PLOTS)
+    switch PLOTS(i)
+        case 1 % compare = 1 elements: w1,w2, vtp... alone
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.AERODYNAMIC_STUDY == 1
+                [Fig] = plot_XFLR5_Aero_Aug2018(Aero,DATA_Ae,DATA_PL,Plot_Options,Fig,Design_criteria,prefix,OUTPUT_read_XLSX,AC_CONFIGURATION);
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that AERODYNAMIC_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+            
+        case 2 % compare = 1 elements: w1,w2, vtp... alone
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.AERODYNAMIC_STUDY == 1
+                [Fig] = plot_XFLR5_Polar_Aug2018(Aero,DATA_Ae,DATA_PL,Plot_Options,Fig,Design_criteria,prefix,OUTPUT_read_XLSX,AC_CONFIGURATION);
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that AERODYNAMIC_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+            
+        case 3
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.AERODYNAMIC_STUDY == 1
+%                 [XAC,Fig] = plot_Generate_XAC(DATA_Ae,Aero,DATA_PL,CASOS,degrees_XAC,Fig,...
+%                     XFLR5_DATA,Performance,X_OC,Plot_Options,VECTOR_XFLR5);
+                
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that AERODYNAMIC_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+            
+%         case 4
+%             if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+%                 if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_var_XCG == 1
+%                     [Fig] = Generates_Plots_PropulsionModels(Prop_data,Data_Trim,V,alpha,D,Plot_Options,Fig);
+%                 else
+%                     Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Trim_var_XCG == 1  - Code in PAUSE';
+%                     disp(Warning)
+%                     pause
+%                 end
+%             else
+%                 Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+%                 disp(Warning)
+%                 pause
+%             end
+            
+        case 5
+             [Fig] = plot_GEOMETRY_2022(Geo_tier,Plot_Options,Body_Geo,meshData,Prop_data,Fig,AC_CONFIGURATION,COLOR_scheme,case_AC,Performance,OUTPUT_read_XLSX);
+        case 6
+            %             % Logic ensures that the studies have been conducted
+            %             if STABILITY_STUDY == 1
+            %                 if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim == 1
+            %                     [Fig] = Generates_Plots_Long_Stability(TRIM_RESULTS,Trim_ITER,TRIM_RESULTS_var,Trim_ITER_var,Geo_tier,Plot_Options,Fig);
+            %                 else
+            %                     Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Trim == 1  - Code in PAUSE';
+            %                     disp(Warning)
+            %                     pause
+            %                 end
+            %             else
+            %                 Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+            %                 disp(Warning)
+            %                 pause
+            %             end
+            %
+        case 7
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_var_XCG == 1
+                    [Fig] = Generates_Plots_Longitudinal_Trim(TRIM_RESULTS,Trim_ITER,TRIM_RESULTS_var_XCG,Trim_ITER_var_XCG,Geo_tier,Plot_Options,OUTPUT_read_XLSX,Fig);
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Trim_var_XCG == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+            
+        case 8
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_varV_m0 == 1
+                    [Fig,M_alpha_cero,V_alpha_cero] = Generates_Plots_Longitudinal_Trim_VAR(TRIM_RESULTS_var_V_XCG,Trim_ITER_var_V_XCG,...
+                        Restrictions_var_V_XCG,Stab_Der_var_V_XCG,Geo_tier,Plot_Options,Fig,OUTPUT_read_XLSX,x_XCG_VAR);
+                    % [Fig,M_alpha_cero,V_alpha_cero] = Generates_Plots_Longitudinal_Trim_VAR2(TRIM_RESULTS_var_V_XCG2,Trim_ITER_var_V_XCG2,...
+                        % Restrictions_var_V_XCG2,Stab_Der_var_V_XCG2,Geo_tier,Plot_Options,Plot_options2,Fig,OUTPUT_read_XLSX,Aero2);
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Trim_varV_m0 == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+            
+        case 9
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_lat == 1
+                    [Fig] = Generates_Plots_Lateral_Trim(Trim_ITER_LAT,Geo_tier,...
+                        Plot_Options,conv_UNITS,conditions_TRIM_lat,OUTPUT_read_XLSX,Fig);
+%                 elseif OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_lat_asymmetries_accelerations == 1
+%                     % If Special cases, asymmetry and accelerations
+%                     [Fig] = Generates_Plots_Lateral_Trim2(Trim_ITER_LAT2,Trim_ITER_LAT3,Geo_tier,...
+%                         Plot_Options,conv_UNITS,conditions_TRIM_lat,OUTPUT_read_XLSX,Fig);
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Trim_lat == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+
+        case 10
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_lat_asymmetries == 1
+                    % If Special cases, asymmetry and accelerations
+                    [Fig] = Generates_Plots_Lateral_Trim2(Trim_ITER_LAT2,Geo_tier,...
+                        Plot_Options,conv_UNITS,conditions_TRIM_lat2,OUTPUT_read_XLSX,Fig);
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Trim_lat_asymmetries == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+
+        case 11
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_lat_accelerations == 1
+                    % If Special cases, asymmetry and accelerations
+                    [Fig] = Generates_Plots_Lateral_Trim3(Trim_ITER_LAT3,Geo_tier,...
+                        Plot_Options,conv_UNITS,conditions_TRIM_lat3,OUTPUT_read_XLSX,Fig);
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Trim_lat_asymmetries == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+
+        case 12
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_lat_Trim_TAB == 1
+                    % If Special cases, asymmetry and accelerations
+                    % [Fig] = Generates_Plots_Lateral_Trim4(Trim_ITER_LAT4,Geo_tier,...
+                    %     Plot_Options,conv_UNITS,conditions_TRIM_lat4,OUTPUT_read_XLSX,Fig);
+                    % [Fig] = Generates_Plots_Lateral_Trim4B(Trim_ITER_LAT4B,Geo_tier,...
+                    %     Plot_Options,conv_UNITS,conditions_TRIM_lat4,OUTPUT_read_XLSX,Fig);
+                    % [Fig] = Generates_Plots_Lateral_Trim4C(Trim_ITER_LAT4C,Geo_tier,...
+                    %     Plot_Options,conv_UNITS,conditions_TRIM_lat4,OUTPUT_read_XLSX,Fig);
+                    [Fig] = Generates_Plots_Lateral_Trim4D(Trim_ITER_LAT4D,Geo_tier,...
+                        Plot_Options,conv_UNITS,conditions_TRIM_lat4,OUTPUT_read_XLSX,Fig);
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Trim_lat_asymmetries == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+            
+        case 13
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Turning == 1
+                    [Fig] = Generates_Plots_Lateral_Turning(Trim_ITER_LAT_Viraje,Geo_tier,...
+                        Plot_Options,conv_UNITS,conditions_TRIM_turning,OUTPUT_read_XLSX,Fig);
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Turning == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+            
+        case 14
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Stability_Derivatives_varV_m0 == 1
+                    [Fig] = Generates_Plots_Derivatives_VAR(Stab_Der_var_V_XCG,Geo_tier,Plot_Options,OUTPUT_read_XLSX,Fig);
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Stability_Derivatives_varV_m0 == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+
+        case 15
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_varV_m0 == 1
+                    if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Stability_Analysis_varV_m0_long == 1
+                        [Fig] = Generates_Plots_StabilityAnalysis_long_VAR(Geo_tier,Plot_Options,Stab_Dyn_Long_var_V_XCG,OUTPUT_read_XLSX,Fig);
+                    end
+                    if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Stability_Analysis_varV_m0_lat == 1
+                        [Fig] = Generates_Plots_StabilityAnalysis_lat_VAR(Geo_tier,Plot_Options,Stab_Dyn_LatDir_var_V_XCG,OUTPUT_read_XLSX,Fig);
+                    end 
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Stability_Analysis_varV_m0 == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+
+        case 16
+            % Logic ensures that the studies have been conducted
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+                %                 if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_varV_m0 == 1
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Stability_Analysis_dyna_impulse_long == 1
+                    [Fig] = Generate_Plots_longitudinal_dynamic(Plot_Options,OUTPUT_read_XLSX,conv_UNITS,Fig,Stab_Dyn_Long);
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Stability_Analysis_dyna_impulse_long == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Stability_Analysis_dyna_impulse_lat == 1
+                    [Fig] = Generate_Plots_lateral_dynamic(Plot_Options,OUTPUT_read_XLSX,conv_UNITS,Fig,Stab_Dyn_LatDir);
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Stability_Analysis_dyna_impulse_lat == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+                %             end
+                
+%             end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+
+        case 17
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.PERFORMANCE_STUDY == 1
+%                 if OUTPUT_read_XLSX.STUDY_flags.ANALYSIS_PERFORMANCE_AP_var == 1
+%                     [Fig] = Generates_Plots_Performance_v1(Geo_tier,Plot_Options,conv_UNITS,Fig,...
+%                         Segments, handles,Weights_AP_var,fuel_total_var,tiempo_total_var,distancia_total_var,W_var,datos_var,case_AC,Plots_performance,Post_processing_PERFORMANCE);
+%                     [Fig] = Generates_Plots_Performance_v3(Storing_PERFORMANCE_DATA_1{6},Fig);
+%                     Generates_Plots_Performance_v3(Storing_PERFORMANCE_DATA_1{6},OUTPUT_read_XLSX);
+                    Generates_Plots_Performance_v3(datos,OUTPUT_read_XLSX,Fig,Plot_Options);
+%                 else
+%                Warning = 'WARNING!!! No results generated, please Make sure that ANALYSIS_PERFORMANCE_AP_var == 1  - Code in PAUSE';
+%                     disp(Warning)
+%                     pause
+%                 end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that PERFORMANCE_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+
+         case 18
+            % Logic ensures that the studies have been conducted
+            if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY == 1
+                if OUTPUT_read_XLSX.STUDY_flags.STABILITY_STUDY_Trim_varV_m0 == 1
+                    [Fig,M_alpha_cero,V_alpha_cero] = Generates_Plots_Longitudinal_Trim_VAR2(TRIM_RESULTS_var_V_XCG2,Trim_ITER_var_V_XCG2,...
+                        Restrictions_var_V_XCG2,Stab_Der_var_V_XCG2,Geo_tier,Plot_Options,Plot_options2,Fig,OUTPUT_read_XLSX,Aero2);
+                else
+                    Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY_Trim_varV_m0 == 1  - Code in PAUSE';
+                    disp(Warning)
+                    pause
+                end
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that STABILITY_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+
+        case 18
+            if OUTPUT_read_XLSX.STUDY_flags.ANALYSIS_PERFORMANCE_AP_var == 1
+                [Fig] = Generates_Plots_Performance_v4(Storing_PERFORMANCE_2,Plot_Options,Plot_Options4,OUTPUT_read_XLSX,Restrictions_var_V_m,Fig);
+            else
+                Warning = 'WARNING!!! No results generated, please Make sure that PERFORMANCE_STUDY == 1  - Code in PAUSE';
+                disp(Warning)
+                pause
+            end
+
+    end
+end

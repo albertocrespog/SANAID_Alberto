@@ -1,0 +1,445 @@
+%%%%%% PRUEBA PLOTS %%%%%%
+function prueba_plots(datos)
+close all
+time_zero = 0;
+distance_zero = 0;
+for i=1:length(datos)-1
+    if strcmp(datos(i).nombre,'Climb') == 1
+        figure(1)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.mbaterias*ones(1,length(datos(i).segmento.tiempo)))
+        title('Batteries Mass Vs Time')
+        xlabel('Time [s]')
+        ylabel('Batteries Mass [kg]')
+        hold on
+        figure(2)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.distancia+distance_zero+distance_zero)
+        title('Distance Vs Time')
+        xlabel('Time [s]')
+        ylabel('Distance [m]')
+        hold on
+        figure(3)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.palanca)
+        title('Throttle Vs Time')
+        xlabel('Time [s]')
+        ylabel('Throttle [-]')
+        hold on
+        figure(4)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.empuje)
+        title('Thrust Vs Time')
+        xlabel('Time [s]')
+        ylabel('Thrust [N]')
+        hold on
+        figure(5)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.veloc_vertical)
+        title('Vertical Velocity Vs Time')
+        xlabel('Time [s]')
+        ylabel('Vertical Velocity [m/s]')
+        hold on
+        figure(6)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.L_D)
+        title('L/D Vs Time')
+        xlabel('Time [s]')
+        ylabel('L/D [-]')
+        hold on
+        figure(7)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.peso)
+        title('Mass Vs Time')
+        xlabel('Time [s]')
+        ylabel('Mass [kg]')
+        hold on
+        figure(8)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.gamma*180/pi*ones(length(datos(i).segmento.tiempo)))
+        title('gamma Vs Time')
+        xlabel('Time [s]')
+        ylabel('gamma [º]')
+        hold on
+        figure(9)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.velocidad)
+        title('Velocity Vs Time')
+        xlabel('Time [s]')
+        ylabel('Velocity [m/s]')
+        hold on
+        figure(10)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.altura)
+        title('Height Vs Time')
+        xlabel('Time [s]')
+        ylabel('Height [m]')
+        hold on
+        figure(11)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.CL)
+        title('CL Vs Time')
+        xlabel('Time [s]')
+        ylabel('CL [-]')
+        hold on
+        figure(12)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.CD)
+        title('CD Vs Time')
+        xlabel('Time [s]')
+        ylabel('CD [-]')
+        hold on
+        figure(13)
+        plot(datos(i).segmento.distancia+distance_zero,datos(i).segmento.altura)
+        title('Mission profile')
+        xlabel('Distance [m]')
+        ylabel('Height [m]')
+        hold on
+        figure(14)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.energiav)
+        title('Energy Vs Time')
+        xlabel('Time [s]')
+        ylabel('Energy [J]')
+        hold on
+    end
+    if strcmp(datos(i).nombre,'VTOL Climb') == 1
+        figure(1)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.mbaterias*ones(1,length(datos(i).segmento.tiempo)))
+        title('Batteries Mass Vs Time')
+        xlabel('Time [s]')
+        ylabel('Batteries Mass [kg]')
+        hold on
+        figure(2)
+        plot(datos(i).segmento.tiempo+time_zero,zeros(length(datos(i).segmento.tiempo))+distance_zero)
+        title('Distance Vs Time')
+        xlabel('Time [s]')
+        ylabel('Distance [m]')
+        hold on
+        figure(3)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.palanca*ones(1,length(datos(i).segmento.tiempo)))
+        title('Throttle Vs Time')
+        xlabel('Time [s]')
+        ylabel('Throttle [-]')
+        hold on
+        figure(4)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.empuje)
+        title('Thrust Vs Time')
+        xlabel('Time [s]')
+        ylabel('Thrust [N]')
+        hold on
+        figure(5)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.veloc_vertical)
+        title('Vertical Velocity Vs Time')
+        xlabel('Time [s]')
+        ylabel('Vertical Velocity [m/s]')
+        hold on
+        figure(6)
+        plot(datos(i).segmento.tiempo+time_zero,zeros(1,length(datos(i).segmento.tiempo)))
+        title('L/D Vs Time')
+        xlabel('Time [s]')
+        ylabel('L/D [-]')
+        hold on
+        figure(7)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.peso*ones(1,length(datos(i).segmento.tiempo)))
+        title('Mass Vs Time')
+        xlabel('Time [s]')
+        ylabel('Mass [kg]')
+        hold on
+        figure(8)
+        plot(datos(i).segmento.tiempo+time_zero,90*ones(1,length(datos(i).segmento.tiempo)))
+        title('gamma Vs Time')
+        xlabel('Time [s]')
+        ylabel('gamma [º]')
+        hold on
+        figure(9)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.veloc_vertical)
+        title('Velocity Vs Time')
+        xlabel('Time [s]')
+        ylabel('Velocity [m/s]')
+        hold on
+        figure(10)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.altura)
+        title('Height Vs Time')
+        xlabel('Time [s]')
+        ylabel('Height [m]')
+        hold on
+        figure(11)
+        plot(datos(i).segmento.tiempo+time_zero,zeros(1,length(datos(i).segmento.tiempo)))
+        title('CL Vs Time')
+        xlabel('Time [s]')
+        ylabel('CL [-]')
+        hold on
+        figure(12)
+        plot(datos(i).segmento.tiempo+time_zero,ones(1,length(datos(i).segmento.tiempo))*datos(i).segmento.CD)
+        title('CD Vs Time')
+        xlabel('Time [s]')
+        ylabel('CD [-]')
+        hold on
+        figure(13)
+        plot(zeros(length(datos(i).segmento.tiempo))+distance_zero,datos(i).segmento.altura)
+        title('Mission profile')
+        xlabel('Distance [m]')
+        ylabel('Height [m]')
+        hold on
+        figure(14)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.energiav)
+        title('Energy Vs Time')
+        xlabel('Time [s]')
+        ylabel('Energy [J]')
+        hold on
+    end
+    if strcmp(datos(i).nombre,'Cruise') == 1
+        figure(1)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.mbateria*ones(1,length(datos(i).segmento.tiempo)))
+        title('Batteries Mass Vs Time')
+        xlabel('Time [s]')
+        ylabel('Batteries Mass [kg]')
+        hold on
+        figure(2)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.distancia+distance_zero)
+        title('Distance Vs Time')
+        xlabel('Time [s]')
+        ylabel('Distance [m]')
+        hold on
+        figure(3)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.palanca)
+        title('Throttle Vs Time')
+        xlabel('Time [s]')
+        ylabel('Throttle [-]')
+        hold on
+        figure(4)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.empuje)
+        title('Thrust Vs Time')
+        xlabel('Time [s]')
+        ylabel('Thrust [N]')
+        hold on
+        figure(5)
+        plot(datos(i).segmento.tiempo+time_zero,zeros(1,length(datos(i).segmento.tiempo)))
+        title('Vertical Velocity Vs Time')
+        xlabel('Time [s]')
+        ylabel('Vertical Velocity [m/s]')
+        hold on
+        figure(6)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.L_D)
+        title('L/D Vs Time')
+        xlabel('Time [s]')
+        ylabel('L/D [-]')
+        hold on
+        figure(7)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.peso)
+        title('Mass Vs Time')
+        xlabel('Time [s]')
+        ylabel('Mass [kg]')
+        hold on
+        figure(8)
+        plot(datos(i).segmento.tiempo+time_zero,zeros(1,length(datos(i).segmento.tiempo)))
+        title('gamma Vs Time')
+        xlabel('Time [s]')
+        ylabel('gamma [º]')
+        hold on
+        figure(9)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.velocidad*ones(1,length(datos(i).segmento.tiempo)))
+        title('Velocity Vs Time')
+        xlabel('Time [s]')
+        ylabel('Velocity [m/s]')
+        hold on
+        figure(10)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.altura*ones(1,length(datos(i).segmento.tiempo)))
+        title('Height Vs Time')
+        xlabel('Time [s]')
+        ylabel('Height [m]')
+        hold on
+        figure(11)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.CL)
+        title('CL Vs Time')
+        xlabel('Time [s]')
+        ylabel('CL [-]')
+        hold on
+        figure(12)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.CD)
+        title('CD Vs Time')
+        xlabel('Time [s]')
+        ylabel('CD [-]')
+        hold on
+        figure(13)
+        plot(datos(i).segmento.distancia+distance_zero,datos(i).segmento.altura*ones(length(datos(i).segmento.tiempo)))
+        title('Mission profile')
+        xlabel('Distance [m]')
+        ylabel('Height [m]')
+        hold on
+        figure(14)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.energiav)
+        title('Energy Vs Time')
+        xlabel('Time [s]')
+        ylabel('Energy [J]')
+        hold on
+    end
+    if strcmp(datos(i).nombre,'Descent') == 1
+        figure(1)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.mbaterias*ones(1,length(datos(i).segmento.tiempo)))
+        title('Batteries Mass Vs Time')
+        xlabel('Time [s]')
+        ylabel('Batteries Mass [kg]')
+        hold on
+        figure(2)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.distancia+distance_zero)
+        title('Distance Vs Time')
+        xlabel('Time [s]')
+        ylabel('Distance [m]')
+        hold on
+        figure(3)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.palanca)
+        title('Throttle Vs Time')
+        xlabel('Time [s]')
+        ylabel('Throttle [-]')
+        hold on
+        figure(4)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.empuje)
+        title('Thrust Vs Time')
+        xlabel('Time [s]')
+        ylabel('Thrust [N]')
+        hold on
+        figure(5)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.veloc_vertical)
+        title('Vertical Velocity Vs Time')
+        xlabel('Time [s]')
+        ylabel('Vertical Velocity [m/s]')
+        hold on
+        figure(6)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.L_D)
+        title('L/D Vs Time')
+        xlabel('Time [s]')
+        ylabel('L/D [-]')
+        hold on
+        figure(7)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.peso)
+        title('Mass Vs Time')
+        xlabel('Time [s]')
+        ylabel('Mass [kg]')
+        hold on
+        figure(8)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.gamma*180/pi*ones(length(datos(i).segmento.tiempo)))
+        title('gamma Vs Time')
+        xlabel('Time [s]')
+        ylabel('gamma [º]')
+        hold on
+        figure(9)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.velocidad)
+        title('Velocity Vs Time')
+        xlabel('Time [s]')
+        ylabel('Velocity [m/s]')
+        hold on
+        figure(10)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.altura)
+        title('Height Vs Time')
+        xlabel('Time [s]')
+        ylabel('Height [m]')
+        hold on
+        figure(11)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.CL)
+        title('CL Vs Time')
+        xlabel('Time [s]')
+        ylabel('CL [-]')
+        hold on
+        figure(12)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.CD)
+        title('CD Vs Time')
+        xlabel('Time [s]')
+        ylabel('CD [-]')
+        hold on
+        figure(13)
+        plot(datos(i).segmento.distancia+distance_zero,datos(i).segmento.altura)
+        title('Mission profile')
+        xlabel('Distance [m]')
+        ylabel('Height [m]')
+        hold on
+        figure(14)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.energiav)
+        title('Energy Vs Time')
+        xlabel('Time [s]')
+        ylabel('Energy [J]')
+        hold on
+    end
+    if strcmp(datos(i).nombre,'VTOL Descent') == 1
+        figure(1)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.mbaterias*ones(length(datos(i).segmento.tiempo),1))
+        title('Batteries Mass Vs Time')
+        xlabel('Time [s]')
+        ylabel('Batteries Mass [kg]')
+        hold on
+        figure(2)
+        plot(datos(i).segmento.tiempo+time_zero,zeros(length(datos(i).segmento.tiempo))+distance_zero)
+        title('Distance Vs Time')
+        xlabel('Time [s]')
+        ylabel('Distance [m]')
+        hold on
+        figure(3)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.palanca)
+        title('Throttle Vs Time')
+        xlabel('Time [s]')
+        ylabel('Throttle [-]')
+        hold on
+        figure(4)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.empuje)
+        title('Thrust Vs Time')
+        xlabel('Time [s]')
+        ylabel('Thrust [N]')
+        hold on
+        figure(5)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.veloc_vertical)
+        title('Vertical Velocity Vs Time')
+        xlabel('Time [s]')
+        ylabel('Vertical Velocity [m/s]')
+        hold on
+        figure(6)
+        plot(datos(i).segmento.tiempo+time_zero,zeros(1,length(datos(i).segmento.tiempo)))
+        title('L/D Vs Time')
+        xlabel('Time [s]')
+        ylabel('L/D [-]')
+        hold on
+        figure(7)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.peso*ones(length(datos(i).segmento.tiempo)))
+        title('Mass Vs Time')
+        xlabel('Time [s]')
+        ylabel('Mass [kg]')
+        hold on
+        figure(8)
+        plot(datos(i).segmento.tiempo+time_zero,-90*ones(1,length(datos(i).segmento.tiempo)))
+        title('gamma Vs Time')
+        xlabel('Time [s]')
+        ylabel('gamma [º]')
+        hold on
+        figure(9)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.veloc_vertical)
+        title('Velocity Vs Time')
+        xlabel('Time [s]')
+        ylabel('Velocity [m/s]')
+        hold on
+        figure(10)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.altura)
+        title('Height Vs Time')
+        xlabel('Time [s]')
+        ylabel('Height [m]')
+        hold on
+        figure(11)
+        plot(datos(i).segmento.tiempo+time_zero,zeros(1,length(datos(i).segmento.tiempo)))
+        title('CL Vs Time')
+        xlabel('Time [s]')
+        ylabel('CL [-]')
+        hold on
+        figure(12)
+        plot(datos(i).segmento.tiempo+time_zero,ones(1,length(datos(i).segmento.tiempo))*datos(i).segmento.CD)
+        title('CD Vs Time')
+        xlabel('Time [s]')
+        ylabel('CD [-]')
+        hold on
+        figure(13)
+        plot(zeros(length(datos(i).segmento.tiempo))+distance_zero,datos(i).segmento.altura)
+        title('Mission profile')
+        xlabel('Distance [m]')
+        ylabel('Height [m]')
+        hold on
+        figure(14)
+        plot(datos(i).segmento.tiempo+time_zero,datos(i).segmento.energiav)
+        title('Energy Vs Time')
+        xlabel('Time [s]')
+        ylabel('Energy [J]')
+        hold on
+    end
+    time_zero = time_zero+datos(i).segmento.tiempo(end);
+    distance_zero = distance_zero+datos(i).segmento.distancia(end);
+end
+
+for i=1:14
+    figure(i)
+    grid on
+    legend(datos(1:(end-1)).nombre)
+end

@@ -1,0 +1,287 @@
+function handles = mision_avanz_v1(varargin)
+
+%% assigns the variable input argument
+switch nargin
+    case 1 
+        Aero_TH = varargin{1};        
+    case 2
+        Prop_data = varargin{2};
+    case 3
+        Weight_tier = varargin{3};
+    case 4
+        conv_UNITS = varargin{4};
+    case 5
+        Geo_tier = varargin{5};
+    case 6
+        AC_CONFIGURATION = varargin{6};
+    case 7
+        Aero = varargin{7};
+    case 8
+        segment = varargin{7};
+end
+
+R2D = conv_UNITS.R2D;
+D2R = conv_UNITS.D2R;
+
+switch mission_type
+    case 2 % TAXY
+        temp_local = 15; % (Celsius)
+        taxi(1) = temp_local + 273.15; % 1: TEMPERATURA LOCAL (K)
+        taxi(2) = 0; % 2: ALTURA LOCAL (m)
+        taxi(3) = 1.013268093075000e+05; % 3: PRESION LOCAL (Pa)
+        taxi(4) = 0.05; % 4: PALANCA DE RALENTI EN TAXI = 0.05
+        taxi(5) = 10; % 5: VELOCIDAD A LA QUE HACE EL TAXI (m/s)
+        taxi(6) = 5*60; % 6: TIEMPO DE ESPERA EN TAXI (s)
+
+        handles.taxi(1) = taxi(1); % 1: TEMPERATURA LOCAL (K)
+        handles.taxi(2) = taxi(2); % 2: ALTURA LOCAL (m)
+        handles.taxi(3) = taxi(3); % 3: PRESION LOCAL (Pa)
+        handles.taxi(4) = taxi(4); % 4: PALANCA DE RALENTI EN TAXI = 0.05
+        handles.taxi(5) = taxi(5); % 5: VELOCIDAD A LA QUE HACE EL TAXI (m/s)
+        handles.taxi(6) = taxi(6); % 6: TIEMPO DE ESPERA EN TAXI (s)
+    case 3 % TAKE OFF
+        temp_local = 15; % (Celsius)
+        despegue(1) = temp_local + 273.15; % 1: TEMPERATURA LOCAL (K)
+        despegue(2) = 0; % 2: ALTURA LOCAL (m)
+        despegue(3) = 1.013268093075000e+05; % 3: PRESION LOCAL (Pa)
+        despegue(4) = 0.02; % 4: COEFICIENTE DE FRICCION CON LA PISTA (MU)
+        despegue(5) = 10; % 5: ALTURA DE OBSTACULO (35 FT CIVIL, 50 FT MILITAR)
+        despegue(6) = 0.02; % 6: GAMMA DE SUBIDA MINIMO
+        despegue(7) = 1; % 7: PALANCA DE GASES PARA DESPEGUE
+        
+        handles.despegue(1) = despegue(1); % 1: TEMPERATURA LOCAL (K)
+        handles.despegue(2) = despegue(2); % 2: ALTURA LOCAL (m)
+        handles.despegue(3) = despegue(3); % 3: PRESION LOCAL (Pa)
+        handles.despegue(4) = despegue(4); % 4: COEFICIENTE DE FRICCION CON LA PISTA (MU)
+        handles.despegue(5) = despegue(5); % 5: ALTURA DE OBSTACULO (35 FT CIVIL, 50 FT MILITAR)
+        handles.despegue(6) = despegue(6); % 6: GAMMA DE SUBIDA MINIMO
+        handles.despegue(7) = despegue(7); % 7: PALANCA DE GASES PARA DESPEGUE
+    case 4 % CLIMB
+        subida.h_inicial = 0; % 1: ALTURA INICIAL - [m]
+        subida.h_final = 3000; % 1: ALTURA FINAL - [m]
+        handles.subida.h_inicial = subida.h_inicial; % 1: ALTURA INICIAL - [m]
+        handles.subida.h_final = subida.h_final; % 1: ALTURA FINAL - [m]
+        %% CLimb Mode
+        switch climb_mode
+            case 2 % 'Subida dados M y gamma';
+                subida.Mach = ; % 3: MACH DE VUELO - [-]
+                subida.gamma = str2double(get(handles.edit13,'String')); % 2: GAMMA DE SUBIDA
+                handles.subida.Mach = str2double(get(handles.edit12,'String')); % 3: MACH DE VUELO - [-]
+                handles.subida.gamma = str2double(get(handles.edit13,'String')); % 2: GAMMA DE SUBIDA
+            case 3 % 'Subida dados EAS y gamma';
+                subida.EAS = ; % 5: VELOCIDAD EAS  - [m/s]
+                subida.gamma = ; % 2: GAMMA DE SUBIDA  - [-]
+                handles.subida.EAS = str2double(get(handles.edit12,'String')); % 5: VELOCIDAD EAS  - [m/s]
+                handles.subida.gamma = str2double(get(handles.edit13,'String')); % 2: GAMMA DE SUBIDA  - [-]
+            case 4 % 'Subida dados TAS y gamma';
+                subida.TAS = ; % 4: VELOCIDAD TAS  - [m/s]
+                subida.gamma = ; % 2: GAMMA DE SUBIDA  - [-]
+                handles.subida.TAS = str2double(get(handles.edit12,'String')); % 4: VELOCIDAD TAS  - [m/s]
+                handles.subida.gamma = str2double(get(handles.edit13,'String')); % 2: GAMMA DE SUBIDA  - [-]
+            case 5 % 'Subida dados M y palanca';
+                subida.Mach = ; % 3: MACH DE VUELO  - [-]
+                subida.palanca = ; % 6: PALANCA DE GASES  - [-]
+                handles.subida.Mach = str2double(get(handles.edit12,'String')); % 3: MACH DE VUELO  - [-]
+                handles.subida.palanca = str2double(get(handles.edit13,'String')); % 6: PALANCA DE GASES  - [-]
+            case 6 % 'Subida dados EAS y palanca';
+                subida.EAS = ; % 5: VELOCIDAD EAS  - [m/s]
+                subida.palanca = ; % 6: PALANCA DE GASES  - [-]
+                handles.subida.EAS = str2double(get(handles.edit12,'String')); % 5: VELOCIDAD EAS  - [m/s]
+                handles.subida.palanca = str2double(get(handles.edit13,'String')); % 6: PALANCA DE GASES  - [-]
+            case 7 % 'Subida dados TAS y palanca';
+                subida.TAS = ; % 4: VELOCIDAD TAS  - [m/s]
+                subida.palanca = ; % 6: PALANCA DE GASES  - [-]
+                handles.subida.TAS = str2double(get(handles.edit12,'String')); % 4: VELOCIDAD TAS  - [m/s]
+                handles.subida.palanca = str2double(get(handles.edit13,'String')); % 6: PALANCA DE GASES  - [-]
+            case 8 % 'Subida dados V inicial,final y gamma';
+                subida.V_ini = ; % 7: VELOCIDAD INICIAL (PARA SUBIDA ACELERADA)  - [m/s]
+                subida.V_fin = ; % 8: VELOCIDAD FINAL (PARA SUBIDA ACELERADA)  - [m/s]
+                subida.gamma = ; % 2: GAMMA DE SUBIDA  - [-]
+                handles.subida.V_ini = str2double(get(handles.edit12,'String')); % 7: VELOCIDAD INICIAL (PARA SUBIDA ACELERADA)  - [m/s]
+                handles.subida.V_fin = str2double(get(handles.edit13,'String')); % 8: VELOCIDAD FINAL (PARA SUBIDA ACELERADA)  - [m/s]
+                handles.subida.gamma = str2double(get(handles.edit14,'String')); % 2: GAMMA DE SUBIDA  - [-]
+            case 9 % 'Subida steppest climb';
+                subida.palanca = ; % 6: PALANCA DE GASES  - [-]
+                handles.subida.palanca = str2double(get(handles.edit12,'String')); % 6: PALANCA DE GASES  - [-]
+            case 10 % 'Subida fastest climb';
+                subida.palanca = ; % 6: PALANCA DE GASES  - [-]
+                handles.subida.palanca = str2double(get(handles.edit12,'String')); % 6: PALANCA DE GASES  - [-]
+            case 11 % 'Subida dados V inicial,final y palanca'
+                subida.V_ini = ; % 7: VELOCIDAD INICIAL (PARA SUBIDA ACELERADA) - [m/s]
+                subida.V_fin = ;% 8: VELOCIDAD FINAL (PARA SUBIDA ACELERADA) - [m/s]
+                subida.palanca = ; % 6: PALANCA DE GASES - [-]
+                handles.subida.V_ini = str2double(get(handles.edit12,'String')); % 7: VELOCIDAD INICIAL (PARA SUBIDA ACELERADA) - [m/s]
+                handles.subida.V_fin = str2double(get(handles.edit13,'String'));% 8: VELOCIDAD FINAL (PARA SUBIDA ACELERADA) - [m/s]
+                handles.subida.palanca = str2double(get(handles.edit14,'String')); % 6: PALANCA DE GASES - [-]
+        end
+    case 5 % CRUISE
+        switch cruise_mode
+            case 2 % 'Crucero dado M y distancia'
+                crucero.h_inicial = 3000;% - [m]
+                crucero.dist_final = 40*1000;% - [m]
+                crucero.Mach = 80/340;% - [-]
+                handles.crucero.h_inicial = str2double(get(handles.edit10,'String'));% - [m]
+                handles.crucero.dist_final = str2double(get(handles.edit11,'String'));% - [m]
+                handles.crucero.Mach = str2double(get(handles.edit12,'String'));% - [-]
+            case 3 % ;'Crucero dado CL y distancia'
+                crucero.h_inicial = str2double(get(handles.edit10,'String'));% - [m]
+                crucero.dist_final = str2double(get(handles.edit11,'String'));% - [m]
+                crucero.CL = str2double(get(handles.edit12,'String'));% - [-]
+                handles.crucero.h_inicial = str2double(get(handles.edit10,'String'));% - [m]
+                handles.crucero.dist_final = str2double(get(handles.edit11,'String'));% - [m]
+                handles.crucero.CL = str2double(get(handles.edit12,'String'));% - [-]
+            case 4 % ;'Crucero dados V inicial,final y palanca'
+                crucero.h_inicial = str2double(get(handles.edit10,'String'));% - [m]
+                crucero.dist_final = str2double(get(handles.edit11,'String'));% - [m]
+                crucero.V_ini = str2double(get(handles.edit12,'String'));% - [m/s]
+                crucero.V_fin = str2double(get(handles.edit13,'String'));% - [m/s]
+                crucero.palanca = str2double(get(handles.edit14,'String'));% - []
+                handles.crucero.h_inicial = str2double(get(handles.edit10,'String'));% - [m]
+                handles.crucero.dist_final = str2double(get(handles.edit11,'String'));% - [m]
+                handles.crucero.V_ini = str2double(get(handles.edit12,'String'));% - [m/s]
+                handles.crucero.V_fin = str2double(get(handles.edit13,'String'));% - [m/s]
+                handles.crucero.palanca = str2double(get(handles.edit14,'String'));% - []
+            case 5 % 'Crucero con polar en funcion de M';
+                crucero.h_inicial = str2double(get(handles.edit10,'String'));% - [m]
+                crucero.dist_final = str2double(get(handles.edit11,'String'));% - [m]
+                crucero.Mach = str2double(get(handles.edit12,'String'));% - []
+                crucero.Cd0 = str2double(get(handles.edit13,'String'));% - []
+                crucero.k1 = str2double(get(handles.edit14,'String'));% - []
+                crucero.k2 = str2double(get(handles.edit15,'String'));% - []
+                handles.crucero.h_inicial = str2double(get(handles.edit10,'String'));% - [m]
+                handles.crucero.dist_final = str2double(get(handles.edit11,'String'));% - [m]
+                handles.crucero.Mach = str2double(get(handles.edit12,'String'));% - []
+                handles.crucero.Cd0 = str2double(get(handles.edit13,'String'));% - []
+                handles.crucero.k1 = str2double(get(handles.edit14,'String'));% - []
+                handles.crucero.k2 = str2double(get(handles.edit15,'String'));% - []
+            case 6 % 'Crucero de max alcance dado peso final'
+                crucero.h_inicial = str2double(get(handles.edit10,'String'));% - [m]
+                crucero.fuel = str2double(get(handles.edit11,'String'));% - [kg]
+                handles.crucero.h_inicial = str2double(get(handles.edit10,'String'));% - [m]
+                handles.crucero.fuel = str2double(get(handles.edit11,'String'));% - [kg]
+            case 7 % 'Crucero de max autonomia dado peso final'
+                crucero.h_inicial = str2double(get(handles.edit10,'String'));% - [m]
+                crucero.fuel = str2double(get(handles.edit11,'String'));% - [kg]
+                handles.crucero.h_inicial = str2double(get(handles.edit10,'String'));% - [m]
+                handles.crucero.fuel = str2double(get(handles.edit11,'String'));% - [kg]
+        end
+    case 6 % LOAD DEPLOYMENT
+        soltar_carga.carga = ;% - [kg]
+        handles.soltar_carga.carga = str2double(get(handles.edit10,'String'));% - [kg]
+    case 7 % TURN
+        viraje.h_inicial = str2double(get(handles.edit10,'String'));
+        viraje.tiempo_final = str2double(get(handles.edit11,'String'));
+        handles.viraje.h_inicial = str2double(get(handles.edit10,'String'));
+        handles.viraje.tiempo_final = str2double(get(handles.edit11,'String'));
+        switch turn_mode
+            case 2 % 'Viraje horizontal dado V y palanca'
+                viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                viraje.palanca = str2double(get(handles.edit13,'String'));% - []
+                handles.viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                handles.viraje.palanca = str2double(get(handles.edit13,'String'));% - []
+            case 3 % 'Viraje horizontal dado V y CL'
+                viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                viraje.CL = str2double(get(handles.edit13,'String'));% - []
+                handles.viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                handles.viraje.CL = str2double(get(handles.edit13,'String'));% - []
+            case 4 % 'Viraje horizontal dado V y balance'
+                viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                viraje.balance = str2double(get(handles.edit13,'String'));% - []
+                handles.viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                handles.viraje.balance = str2double(get(handles.edit13,'String'));% - []
+            case 5 % 'Viraje horizontal dado V y n'
+                viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                viraje.n = str2double(get(handles.edit13,'String'));% - []
+                handles.viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                handles.viraje.n = str2double(get(handles.edit13,'String'));% - []
+            case 6 % 'V.H dado V y radio de giro '
+                viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                viraje.radio = str2double(get(handles.edit13,'String'));% - [m]
+                handles.viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                handles.viraje.radio = str2double(get(handles.edit13,'String'));% - [m]
+            case 7 % 'V.H dado V y velocidad de guiñada';...
+                viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                viraje.vel_guiniada = str2double(get(handles.edit13,'String'));% - [rad/s]
+                handles.viraje.velocidad = str2double(get(handles.edit12,'String'));% - [m/s]
+                handles.viraje.vel_guiniada = str2double(get(handles.edit13,'String'));% - [rad/s]
+            case 8 % 'V.H dado palanca y a factor de carga max'
+                viraje.palanca = str2double(get(handles.edit12,'String'));% - []
+                handles.viraje.palanca = str2double(get(handles.edit12,'String'));% - []
+            case 9 % 'V.H dado palanca y a v de guiñada max'
+                viraje.palanca = str2double(get(handles.edit12,'String'));% - []
+                handles.viraje.palanca = str2double(get(handles.edit12,'String'));% - []
+            case 10 % 'V.H dado palanca y a radio min'
+                viraje.palanca = str2double(get(handles.edit12,'String'));% - []
+                handles.viraje.palanca = str2double(get(handles.edit12,'String'));% - []
+        end
+    case 8 % DESCENT
+        descenso.h_inicial = str2double(get(handles.edit10,'String'));
+        descenso.h_final = str2double(get(handles.edit11,'String'));
+        handles.descenso.h_inicial = str2double(get(handles.edit10,'String'));
+        handles.descenso.h_final = str2double(get(handles.edit11,'String'));
+        switch descent_mode
+            case 2 % 'Descenso dados M y gamma'
+                descenso.Mach = str2double(get(handles.edit12,'String')); % - []
+                descenso.gamma = str2double(get(handles.edit13,'String'));% - []
+                handles.descenso.Mach = str2double(get(handles.edit12,'String')); % - []
+                handles.descenso.gamma = str2double(get(handles.edit13,'String'));% - []
+            case 3 % 'Descenso dados EAS y gamma';
+                descenso.EAS = str2double(get(handles.edit12,'String')); % - [m/s]
+                descenso.gamma = str2double(get(handles.edit13,'String'));% - []
+                handles.descenso.EAS = str2double(get(handles.edit12,'String')); % - [m/s]
+                handles.descenso.gamma = str2double(get(handles.edit13,'String'));% - []
+            case 4 % 'Descenso dados TAS y gamma'
+                descenso.TAS = str2double(get(handles.edit12,'String')); % - [m/s]
+                descenso.gamma = str2double(get(handles.edit13,'String'));% - []
+                handles.descenso.TAS = str2double(get(handles.edit12,'String')); % - [m/s]
+                handles.descenso.gamma = str2double(get(handles.edit13,'String'));% - []
+            case 5 % 'Descenso dados M y palanca'
+                descenso.Mach = str2double(get(handles.edit12,'String')); % - []
+                descenso.palanca = str2double(get(handles.edit13,'String'));% - []
+                handles.descenso.Mach = str2double(get(handles.edit12,'String')); % - []
+                handles.descenso.palanca = str2double(get(handles.edit13,'String'));% - []
+            case 6 % 'Descenso dados EAS y palanca'
+                descenso.EAS = str2double(get(handles.edit12,'String')); % - [m/s]
+                descenso.palanca = str2double(get(handles.edit13,'String'));% - []
+                handles.descenso.EAS = str2double(get(handles.edit12,'String')); % - [m/s]
+                handles.descenso.palanca = str2double(get(handles.edit13,'String'));% - []
+            case 7 % 'Descenso dados TAS y palanca'
+                descenso.TAS = str2double(get(handles.edit12,'String')); % - [m/s]
+                descenso.palanca = str2double(get(handles.edit13,'String'));% - []
+                handles.descenso.TAS = str2double(get(handles.edit12,'String')); % - [m/s]
+                handles.descenso.palanca = str2double(get(handles.edit13,'String'));% - []
+            case 8 % 'Descenso dados V inicial,final y gamma'
+                descenso.V_ini = str2double(get(handles.edit12,'String')); % - [m/s]
+                descenso.V_fin = str2double(get(handles.edit13,'String'));% - [m/s]
+                descenso.gamma = str2double(get(handles.edit14,'String'));% - []
+                handles.descenso.V_ini = str2double(get(handles.edit12,'String')); % - [m/s]
+                handles.descenso.V_fin = str2double(get(handles.edit13,'String'));% - [m/s]
+                handles.descenso.gamma = str2double(get(handles.edit14,'String'));% - []
+            case 9 % 'Descenso a minimo gamma'
+                descenso.palanca = str2double(get(handles.edit12,'String'));% - []
+                handles.descenso.palanca = str2double(get(handles.edit12,'String'));% - []
+            case 10 % 'Descenso "slowest sink"'
+                descenso.palanca = str2double(get(handles.edit12,'String'));% - []
+                handles.descenso.palanca = str2double(get(handles.edit12,'String'));% - []
+            case 11 % 'Descenso dados V inicial,final y palanca'
+                descenso.V_ini = str2double(get(handles.edit12,'String')); % - [m/s]
+                descenso.V_fin = str2double(get(handles.edit13,'String'));% - [m/s]
+                descenso.palanca = str2double(get(handles.edit14,'String'));% - []
+                handles.descenso.V_ini = str2double(get(handles.edit12,'String')); % - [m/s]
+                handles.descenso.V_fin = str2double(get(handles.edit13,'String'));% - [m/s]
+                handles.descenso.palanca = str2double(get(handles.edit14,'String'));% - []
+        end
+    case 9 % LANDING
+        aterrizaje(1) = str2double(get(handles.edit10,'String')); % 'Temperatura local' - [K]
+        aterrizaje(2) = str2double(get(handles.edit11,'String')); % 'Altura local' - [m]
+        aterrizaje(3) = str2double(get(handles.edit12,'String')); % 'Presion local' - [Pa]
+        aterrizaje(4) = str2double(get(handles.edit13,'String')); % 'Coef de friccion' - [-]
+        aterrizaje(5) = str2double(get(handles.edit14,'String')); % 'Palanca de reversa' - [-]
+        aterrizaje(6) = str2double(get(handles.edit15,'String')); % 'Tiempo en activar frenos' - [s]
+        handles.aterrizaje(1) = str2double(get(handles.edit10,'String')); % 'Temperatura local' - [K]
+        handles.aterrizaje(2) = str2double(get(handles.edit11,'String')); % 'Altura local' - [m]
+        handles.aterrizaje(3) = str2double(get(handles.edit12,'String')); % 'Presion local' - [Pa]
+        handles.aterrizaje(4) = str2double(get(handles.edit13,'String')); % 'Coef de friccion' - [-]
+        handles.aterrizaje(5) = str2double(get(handles.edit14,'String')); % 'Palanca de reversa' - [-]
+        handles.aterrizaje(6) = str2double(get(handles.edit15,'String')); % 'Tiempo en activar frenos' - [s]
+end

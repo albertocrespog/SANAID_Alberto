@@ -1,0 +1,10 @@
+xflr5 v6.33
+
+Plane name :        EMERGENTIA_Sw1_e_no_dihedral
+Polar name :        T1-25.0 m/s-LLT-0.0kg-x0.0m-proj_area
+Freestream speed :  25.000 m/s
+
+
+   alpha      Beta       CL          CDi        CDv        CD         CY         Cl         Cm         Cn        Cni       QInf        XCP
+
+

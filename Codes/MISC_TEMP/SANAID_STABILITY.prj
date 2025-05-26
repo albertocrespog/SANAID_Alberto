@@ -1,0 +1,163 @@
+<deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
+  <configuration file="D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\Codes\SANAID_STABILITY.prj" location="D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\Codes" name="SANAID_STABILITY" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>SANAID_STABILITY</param.appname>
+    <param.icon />
+    <param.icons />
+    <param.version>1.0</param.version>
+    <param.authnamewatermark>Sergio</param.authnamewatermark>
+    <param.email>sesteban@us.es</param.email>
+    <param.company>US</param.company>
+    <param.summary>SANAID SATABILITY</param.summary>
+    <param.description>SANAID SATABILITY</param.description>
+    <param.screenshot />
+    <param.guid />
+    <param.installpath.string>\US\SANAID_STABILITY\</param.installpath.string>
+    <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
+    <param.logo />
+    <param.install.notes />
+    <param.target.install.notes />
+    <param.intermediate>${PROJECT_ROOT}\SANAID_STABILITY\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\SANAID_STABILITY\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\SANAID_STABILITY\for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}\SANAID_STABILITY</param.logdir>
+    <param.enable.clean.build>false</param.enable.clean.build>
+    <param.user.defined.mcr.options />
+    <param.target.type>subtarget.standalone</param.target.type>
+    <param.support.packages />
+    <param.web.mcr>true</param.web.mcr>
+    <param.package.mcr>false</param.package.mcr>
+    <param.no.mcr>false</param.no.mcr>
+    <param.web.mcr.name>MyAppInstaller_web</param.web.mcr.name>
+    <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
+    <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
+    <param.windows.command.prompt>true</param.windows.command.prompt>
+    <param.create.log>false</param.create.log>
+    <param.log.file />
+    <param.native.matlab>false</param.native.matlab>
+    <param.checkbox>false</param.checkbox>
+    <param.example />
+    <param.help.text>Syntax 
+	  -? 
+	 
+ Input Arguments 
+	 -?  print help on how to use the application 
+	 input arguments 
+ Description 
+ 	 SANAID SATABILITY</param.help.text>
+    <unset>
+      <param.icon />
+      <param.icons />
+      <param.version />
+      <param.screenshot />
+      <param.guid />
+      <param.installpath.string />
+      <param.installpath.combo />
+      <param.logo />
+      <param.install.notes />
+      <param.target.install.notes />
+      <param.intermediate />
+      <param.files.only />
+      <param.output />
+      <param.logdir />
+      <param.enable.clean.build />
+      <param.user.defined.mcr.options />
+      <param.target.type />
+      <param.support.packages />
+      <param.web.mcr />
+      <param.package.mcr />
+      <param.no.mcr />
+      <param.web.mcr.name />
+      <param.package.mcr.name />
+      <param.no.mcr.name />
+      <param.windows.command.prompt />
+      <param.create.log />
+      <param.log.file />
+      <param.native.matlab />
+      <param.checkbox />
+      <param.example />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\SANAID_STABILITY.m</file>
+    </fileset.main>
+    <fileset.resources>
+      <file>D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\AERO</file>
+      <file>D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\AIRCRAFT</file>
+      <file>D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\CAD</file>
+      <file>${PROJECT_ROOT}</file>
+      <file>D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\Fuselage</file>
+      <file>D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\MATLAB</file>
+      <file>D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\Prop_data</file>
+      <file>D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\Results</file>
+      <file>D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\src2</file>
+      <file>D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\Stability</file>
+    </fileset.resources>
+    <fileset.package />
+    <fileset.depfun>
+      <file>${PROJECT_ROOT}\conduct_Analysis_v2.m</file>
+      <file>${PROJECT_ROOT}\get_add_path.m</file>
+      <file>${PROJECT_ROOT}\selection_filename_location.m</file>
+    </fileset.depfun>
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}\SANAID_STABILITY\for_testing" name="SANAID_STABILITY.exe" optional="false">D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\Codes\SANAID_STABILITY\for_testing\SANAID_STABILITY.exe</file>
+      <file location="${PROJECT_ROOT}\SANAID_STABILITY\for_testing" name="readme.txt" optional="true">D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\Codes\SANAID_STABILITY\for_testing\readme.txt</file>
+      <file location="${PROJECT_ROOT}\SANAID_STABILITY\for_testing" name="splash.png" optional="false">D:\Sergio\Documents\Dropbox\GitHub\SANAID_GLOBAL\MATLAB\Codes\SANAID_STABILITY\for_testing\splash.png</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2023b</root>
+      <toolboxes>
+        <toolbox name="matlabcoder" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="gpucoder" />
+        <toolbox name="fixedpoint" />
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="neuralnetwork" />
+      </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
+      <toolbox>
+        <neuralnetwork>
+          <enabled>true</enabled>
+        </neuralnetwork>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

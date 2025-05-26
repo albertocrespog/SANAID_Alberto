@@ -1,0 +1,85 @@
+% function get_writting_fuselage_file(M_ini,M,M_scaled_ini,M_scaled,name1,name2,name3)
+function get_writting_fuselage_file(M,name1,name2)
+
+% Prints fuselage data for analysis in MATLAB
+fileID = fopen(name1,'w');
+fprintf(fileID,'%20s\r\n',name1);
+fprintf(fileID,'%20s\r\n','');
+fprintf(fileID,'%20s\r\n','Right Surface Points');
+fprintf(fileID,'%11s %11s %11s\r\n','x()','y()','z()');
+% fprintf(fileID,'%20s\r\n','Cross Section   1');
+% fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M_ini);
+% fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\r\n','Cross Section   1');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{1});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','Cross Section   2');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{2});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','Cross Section   3');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{3});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','Cross Section   4');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{4});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','Cross Section   5');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{5});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','Cross Section   6');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{6});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','Cross Section   7');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{7});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','Cross Section   8');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{8});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','Cross Section   9');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{9});
+fclose(fileID);
+    
+% Generate File for XFLR5
+% Prints fuselage data
+% fileID = fopen('Fuselage_XFLR5.txt','w');
+fileID = fopen(name2,'w');
+fprintf(fileID,'%20s\r\n','');
+fprintf(fileID,'%20s\r\n','# This file defines a body geometry');
+fprintf(fileID,'%20s\r\n','# The frames are defined from nose to tail');
+fprintf(fileID,'%20s\r\n','# The numer of sidelines is defined by the number of points of the first frame');
+fprintf(fileID,'%20s\r\n','# Each of the next frames should have the same number of points as the first');
+fprintf(fileID,'%20s\r\n','# For each frame, the points are defined for the right half of the body, ');
+fprintf(fileID,'%20s\r\n','# in the clockwise direction aft looking forward');
+fprintf(fileID,'%20s\r\n','');
+fprintf(fileID,'%20s\r\n',name2);
+fprintf(fileID,'%20s\r\n','');
+fprintf(fileID,'%20s\r\n','BODYTYPE');
+fprintf(fileID,'%20s\r\n',' 2        # Flat Panels (1) or NURBS (2)');
+fprintf(fileID,'%20s\r\n','');
+fprintf(fileID,'%20s\r\n','OFFSET');
+fprintf(fileID,'%20s\r\n','0.0     0.0     0.0     #Total body offset (Y-coord is ignored)');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{1});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','FRAME');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{2});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','FRAME');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{3});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','FRAME');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{4});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','FRAME');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{5});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','FRAME');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{6});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','FRAME');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{7});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','FRAME');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{8});
+fprintf(fileID,'%20s\n',' ');
+fprintf(fileID,'%20s\n','FRAME');
+fprintf(fileID,'%11.8f %11.8f %11.8f\r\n',M{9});
+fclose(fileID);

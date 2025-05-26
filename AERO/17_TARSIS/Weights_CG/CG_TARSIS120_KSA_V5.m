@@ -1,0 +1,175 @@
+function OUTPUT =  CG_TARSIS120_KSA_V5(FUEL, W_PL, RACK, n_MSL, DEPOSITO, MOTOR, CATIAT120, CG_DEP)
+
+% Elección de la configuración
+seleccion_motor = MOTOR; % 1 para SP210, 2 para DA215
+seleccion_rack =RACK; % 1 == rack, 0 == sin rack
+seleccion_misiles= n_MSL; %0,1,2,3,4
+seleccion_deposito= DEPOSITO; % 1 == deposito T120-01
+peso_payload = W_PL;
+llenado_deposito= FUEL;  % en tanto por 1 
+
+		%%%%%%%%%% Para mantener MTOW a 120kg, estos son los casos:        
+		%%%%%%%%%% 	Caso 0. MSL=0 RACK=0 -> FUEL=1;		             
+        %%%%%%%%%% 	Caso 1. (Bola). MSL=3 RACK=1 -> FUEL=0,94229;       
+        %%%%%%%%%% 	Caso 2. (Bola + BAT). MSL=4 RACK=1 -> FUEL=0,3519;  
+
+% [PESO, X, Y, Z, Ix, Iy, Iz, Ixy, Ixz, Iyz]
+FUS     = CATIAT120(1,:);
+TAIL    = CATIAT120(2,:);
+NSE_LGR = CATIAT120(3,:);
+PPL_LGR = CATIAT120(4,:);
+SP210   = CATIAT120(5,:);
+DA215   = CATIAT120(6,:);
+WNG_LFT = CATIAT120(7,:);
+WNG_RGT = WNG_LFT;
+
+WNG_RGT(3)  = -WNG_RGT(3);
+WNG_RGT(10) = -WNG_RGT(10); % Iyz revisar con la formula
+WNG_RGT(8)  = -WNG_RGT(8); % Ixy revisar con la formula
+
+RCK_1 = CATIAT120(8,:);
+RCK_0 = CATIAT120(9,:);
+MSL_0 = CATIAT120(10,:);
+MSL_1 = CATIAT120(11,:);
+MSL_2 = CATIAT120(12,:);
+MSL_3 = CATIAT120(13,:);
+MSL_4 = CATIAT120(14,:);
+
+PLD       = CATIAT120(15,:);
+PLD(1)    = peso_payload;
+PLD(5:10) = PLD(5:10)*(peso_payload/3.75);%aqui adapta las inercias al peso que le pongas
+
+SYS = CATIAT120(20,:);
+
+MAZ_ELE = CATIAT120(21,:);
+
+W_PEG_TOR = CATIAT120(22,:);
+
+
+if seleccion_motor==1
+    MPS=SP210; % SP210
+elseif seleccion_motor==2
+    MPS=DA215; % DA215
+else
+    disp('error en seleccion del motor')
+end
+
+
+if seleccion_rack==1
+    RACK_LFT     =  RCK_1; % con rack
+    RACK_RGT     =  RACK_LFT;
+    RACK_RGT(3)  = -RACK_RGT(3);
+    RACK_RGT(10) = -RACK_RGT(10);
+    RACK_RGT(8)  = -RACK_RGT(8);
+elseif seleccion_rack==0
+    RACK_LFT = RCK_0; % sin rack
+    RACK_RGT = RCK_0;
+else
+    disp('error en seleccion del rack')
+end
+
+
+if seleccion_rack==1
+  if seleccion_misiles==0
+      MSL=MSL_0; % sin misiles
+  elseif seleccion_misiles==1
+      MSL=MSL_1; % 1 misil
+  elseif seleccion_misiles==2
+      MSL=MSL_2; % 2 misiles
+  elseif seleccion_misiles==3
+      MSL=MSL_3; % 3 misiles
+  elseif seleccion_misiles==4
+      MSL=MSL_4; % 4 misiles
+  else
+      disp('error en seleccion de los misiles')
+  end
+elseif seleccion_rack==0 && seleccion_misiles==0
+    MSL=MSL_0;
+else
+   disp('No se pueden cargar misiles sin Rack')
+end
+
+
+if seleccion_deposito==1 %original/extraíble
+    GAS_FULL  = CATIAT120(16,:);
+    GAS_EMPTY = CATIAT120(17,:);
+else
+    disp('error en la selección del deposito')
+end
+
+
+%% Datos depósito según %llenado
+
+GAS = interp1(CG_DEP(:,13), CG_DEP(:,1:10), llenado_deposito, 'spline');
+
+% figure
+% plot(CG_DEP(:,13), CG_DEP(:,1), '*-'); hold on
+% xlabel('% llenado')
+% ylabel('GAS mass')
+% grid on
+
+
+% GAS_CAP = GAS_FULL  - GAS_EMPTY;
+% GAS     = GAS_EMPTY + GAS_CAP*llenado_deposito; % Revisar GAS_CAP
+%GAS(2)
+
+
+%% OBTENCIÓN CENTRO DE GRAVEDAD
+
+m=1;
+x=2;
+y=3;
+z=4;
+
+%DEJO LA COLA FUERA DE STR POR QUE SU PESO REAL (OBTENIDO DE TALLER) ES EL
+%QUE ESTÁ INCLUIDO
+sum_masas_STR = FUS(m)+WNG_LFT(m)+WNG_RGT(m)+NSE_LGR(m)+PPL_LGR(m)+MPS(m)+RACK_LFT(m)+RACK_RGT(m);
+sum_masas     = sum_masas_STR+TAIL(m)+MSL(m)+PLD(m)+GAS(m)+SYS(m)+MAZ_ELE(m)+W_PEG_TOR(m);
+
+x_cg_STR = (FUS(m)*FUS(x) + WNG_LFT(m)*WNG_LFT(x) + WNG_RGT(m)*WNG_RGT(x)  + NSE_LGR(m)*NSE_LGR(x)...
+           + PPL_LGR(m)*PPL_LGR(x) + MPS(m)*MPS(x) + RACK_LFT(m)*RACK_LFT(x) + RACK_RGT(m)*RACK_RGT(x))/sum_masas_STR;
+
+x_cg     = ((sum_masas_STR)*x_cg_STR + W_PEG_TOR(m)*W_PEG_TOR(x)+ TAIL(m)*TAIL(x) + MSL(m)*MSL(x) + PLD(m)*PLD(x) + ...
+           GAS(m)*GAS(x)+ SYS(m)*SYS(x) + MAZ_ELE(m)*MAZ_ELE(x))/sum_masas;
+
+y_cg_STR = (FUS(m)*FUS(y) + WNG_LFT(m)*WNG_LFT(y) + WNG_RGT(m)*WNG_RGT(y)  + NSE_LGR(m)*NSE_LGR(y)...
+           + PPL_LGR(m)*PPL_LGR(y) + MPS(m)*MPS(y) + RACK_LFT(m)*RACK_LFT(y) + RACK_RGT(m)*RACK_RGT(y))/sum_masas_STR;
+
+y_cg     = ((sum_masas_STR)*y_cg_STR +W_PEG_TOR(m)*W_PEG_TOR(y)+ TAIL(m)*TAIL(y) + MSL(m)*MSL(y) + PLD(m)*PLD(y) + ...
+           GAS(m)*GAS(y)+ SYS(m)*SYS(y) + MAZ_ELE(m)*MAZ_ELE(y))/sum_masas;
+
+z_cg_STR = (FUS(m)*FUS(z) + WNG_LFT(m)*WNG_LFT(z) + WNG_RGT(m)*WNG_RGT(z) + NSE_LGR(m)*NSE_LGR(z)...
+           + PPL_LGR(m)*PPL_LGR(z) + MPS(m)*MPS(z) + RACK_LFT(m)*RACK_LFT(z) + RACK_RGT(m)*RACK_RGT(z))/sum_masas_STR;
+
+z_cg     = ((sum_masas_STR)*z_cg_STR + W_PEG_TOR(m)*W_PEG_TOR(z)+ TAIL(m)*TAIL(z) + MSL(m)*MSL(z) + PLD(m)*PLD(z) + ...
+           GAS(m)*GAS(z)+ SYS(m)*SYS(z) + MAZ_ELE(m)*MAZ_ELE(z))/sum_masas;
+
+
+
+x_morro=490.224; % distancia antiguo del mamparo al morro
+CG=[x_cg + x_morro,y_cg,z_cg];
+
+x_cg=x_cg*0.001; 
+y_cg=y_cg*0.001;
+z_cg=z_cg*0.001;
+
+x_cg_STR=x_cg_STR*0.001; 
+y_cg_STR=y_cg_STR*0.001;
+z_cg_STR=z_cg_STR*0.001;
+
+ %SUMA TOTAL DE INERCIA EN MAMPARO
+I_TOTAL = FUS(5:10) + NSE_LGR(5:10) + PPL_LGR(5:10) + MPS(5:10)  + TAIL(5:10) + WNG_RGT(5:10) + WNG_LFT(5:10) + ...
+          RACK_LFT(5:10) + RACK_RGT(5:10) + MSL(5:10) + PLD(5:10) + GAS(5:10) + SYS(5:10) + MAZ_ELE(5:10) + W_PEG_TOR(5:10);
+
+% STEINER - INERCIA EN CG
+I_TOTALCG(1) = I_TOTAL(1) - sum_masas*(y_cg^2+z_cg^2);
+I_TOTALCG(2) = I_TOTAL(2) - sum_masas*(x_cg^2+z_cg^2);
+I_TOTALCG(3) = I_TOTAL(3) - sum_masas*(x_cg^2+y_cg^2);
+I_TOTALCG(4) = I_TOTAL(4) + sum_masas*x_cg*y_cg;
+I_TOTALCG(5) = I_TOTAL(5) + sum_masas*x_cg*z_cg;
+I_TOTALCG(6) = I_TOTAL(6) + sum_masas*y_cg*z_cg;
+format longg
+
+OUTPUT=[sum_masas,CG(1),CG(2),CG(3),I_TOTALCG]'; % CG medido desde el morro; Inercias en el CG (calculadas a partir de las inercias en el mamparo).
+
+end
